@@ -10,7 +10,6 @@ namespace Fighterz.Entities.Animations
 {
     public interface ISprite
     {
-
         public Texture2D Texture { get; set; }
 
         public Vector2 Position { get;  set;  }

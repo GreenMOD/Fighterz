@@ -6,45 +6,59 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Fighterz.Entities.Interfaces;
+using System.Windows.Forms;
 
 namespace Fighterz.Entities.Animations
 {
-    public class AnimationManager : IEntity
+    public class AnimationManager
     {
 
-        //    private List<Animation> _animations= new List<Animation>();
+        private List<Animation> _animations = new List<Animation>();
 
-        //    private bool _isAnimated = false;
+        private bool _isAnimated = false;
 
-        //    private Animation _currentAnimation;
+        private int _indexOfAnimation;
 
-        //    private SpriteBatch _spriteBatch;
+        private GameTime _start;
 
-        //    private GameTime _gameTime;
+        private Texture2D _texture;
+        public Animation CurrentAnimation { get => _animations[_indexOfAnimation];}
 
-        //    public Animation CurrentAnimation { get => _currentAnimation; set => _currentAnimation = value; }
+        public AnimationManager(Texture2D texture, GameTime gameTime)
+        {
+            _texture = texture;
+            _start = gameTime;
+            _indexOfAnimation = 0;
+
+        }
+
+        public void Update(GameTime gameTime, Vector2 pos)
+        {
+            CurrentAnimation.Update(gameTime,pos);
+        }
 
 
-        //    public AnimationManager(SpriteBatch spriteBatch,GameTime gameTime)
-        //    {
-        //        _spriteBatch = spriteBatch;
-        //        _gameTime = gameTime;
-        //    }
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            CurrentAnimation.Draw(spriteBatch,gameTime,_texture); 
+        }
 
-        //    public void Update(GameTime gameTime)
-        //    {
-        //        CurrentAnimation.Update(gameTime);
-        //    }
+        public void AddAnimation(GameTime gameTime,Rectangle frameSize, int numFrames, int gap, float frameRate, bool isLooped)
+        {
+            Animation toAdd = new Animation(gameTime,frameRate,isLooped);
+            float x = 0;
+            float y = 0;
+
+            for (int i = 0; i < numFrames; i++)
+            {
+                toAdd.AddFrame(new Rectangle((int)x, (int)y, frameSize.Width, frameSize.Height));
+                x += (frameSize.Width + gap);
+
+            } 
+            _animations.Add(toAdd);
+        }
 
 
-        //    public void Draw(GameTime gameTime)
-        //    {
-        //        CurrentAnimation.Draw()
-                  ///Next animation
-        //    }
-
-        //    public void AddAnimation()
-        
     }
 }
 

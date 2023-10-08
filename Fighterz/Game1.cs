@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Fighterz.Managers;
 using Fighterz.Entities;
+using Fighterz.Entities.Fighters;
+using System.Runtime.CompilerServices;
+
 namespace Fighterz
 {
     public class Game1 : Game
@@ -11,6 +14,7 @@ namespace Fighterz
         private SpriteBatch _spriteBatch;
         private EntityManager _entityManager;
         private Texture2D _testFighter1;
+        private bool isFirstUpdate = true;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -35,10 +39,22 @@ namespace Fighterz
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (isFirstUpdate)
+            {
+                _entityManager.AddEntity(new TestFighter(gameTime,1, new Vector2(200,200),_testFighter1));
+                isFirstUpdate = false;
+            }
 
-            // TODO: Add your update logic here
+
+
+
+
+            _entityManager.Update(gameTime);
+
+
+
+
+
 
             base.Update(gameTime);
         }
@@ -47,8 +63,11 @@ namespace Fighterz
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
 
+            _entityManager.Draw(_spriteBatch, gameTime);
+
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
